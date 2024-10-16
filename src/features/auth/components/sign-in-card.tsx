@@ -14,23 +14,24 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1, "Required"),
-});
+import Link from "next/link";
+import { loginSchema } from "../schemas";
+import { useLogin } from "../api/use-login";
 
 const SignInCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useLogin();
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
     console.log({ values });
+    mutate({ json: values });
   };
 
   return (
@@ -40,76 +41,87 @@ const SignInCard = () => {
       </CardHeader>
       <div className="px-7 mb-2">
         <DottedSeparator />
-        <CardContent className="p-7">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                name="email"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="Enter email address"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                name="password"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="password"
-                        placeholder="Enter password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button disabled={false} size="lg" className="w-full">
-                Login
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-
-        <div className="px-7">
-          <DottedSeparator />
-        </div>
-
-        <CardContent className="p-7 flex flex-col gap-y-4">
-          <Button
-            disabled={false}
-            variant="secondary"
-            size="lg"
-            className="w-full"
-          >
-            <FcGoogle className="mr-2 size-5" />
-            Login with Google
-          </Button>
-
-          <Button
-            disabled={false}
-            variant="secondary"
-            size="lg"
-            className="w-full"
-          >
-            <FaGithub className="mr-2 size-5" />
-            Login with Github
-          </Button>
-        </CardContent>
       </div>
+      <CardContent className="p-7">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              name="email"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="Enter email address"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="password"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="password"
+                      placeholder="Enter password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button disabled={false} size="lg" className="w-full">
+              Login
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+
+      <div className="px-7">
+        <DottedSeparator />
+      </div>
+
+      <CardContent className="p-7 flex flex-col gap-y-4">
+        <Button
+          disabled={false}
+          variant="secondary"
+          size="lg"
+          className="w-full"
+        >
+          <FcGoogle className="mr-2 size-5" />
+          Login with Google
+        </Button>
+
+        <Button
+          disabled={false}
+          variant="secondary"
+          size="lg"
+          className="w-full"
+        >
+          <FaGithub className="mr-2 size-5" />
+          Login with Github
+        </Button>
+      </CardContent>
+      <div className="px-7">
+        <DottedSeparator />
+      </div>
+      <CardContent className="p-7 flex items-center justify-center">
+        <p>
+          Don&apos;t have an account?
+          <Link href="/sign-up">
+            <span className="text-blue-700">&nbsp;Sign Up</span>
+          </Link>
+        </p>
+      </CardContent>
     </Card>
   );
 };
