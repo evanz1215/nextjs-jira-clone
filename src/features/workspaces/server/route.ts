@@ -19,7 +19,7 @@ const app = new Hono().post(
       DATABASE_ID,
       WORKSPACES_ID,
       ID.unique(),
-      { name }
+      { name, userId: user.$id }
     );
 
     return c.json({ data: workspace });
