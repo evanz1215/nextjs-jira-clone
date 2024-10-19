@@ -25,9 +25,12 @@ export const useLogout = () => {
             queryClient.invalidateQueries({
                 queryKey: ["current"]
             });
-            queryClient.invalidateQueries({
+            queryClient.removeQueries({
                 queryKey: ["workspaces"]
             });
+            // queryClient.invalidateQueries({
+            //     queryKey: ["workspaces"]
+            // });
             router.refresh();
         },
         onError: () => {
