@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { client } from '@/lib/rpc';
+import { useQuery } from "@tanstack/react-query";
+import { client } from "@/lib/rpc";
 
 export const useCurrent = () => {
     const query = useQuery({
-        queryKey: ['current'],
+        queryKey: ["current"],
         queryFn: async () => {
             const response = await client.api.auth.current.$get();
 

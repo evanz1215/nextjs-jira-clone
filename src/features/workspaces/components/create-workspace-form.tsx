@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { createWorkspaceSchema } from '../schemas';
-import { z } from 'zod';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DottedSeparator } from '@/components/dotted-separator';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { createWorkspaceSchema } from "../schemas";
+import { z } from "zod";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DottedSeparator } from "@/components/dotted-separator";
 import {
     Form,
     FormControl,
@@ -14,13 +14,13 @@ import {
     FormItem,
     FormLabel,
     FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useCreateWorkspace } from '../api/use-create-workspace';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import Image from 'next/image';
-import { ImageIcon } from 'lucide-react';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useCreateWorkspace } from "../api/use-create-workspace";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 interface CreateWorkspaceFormProps {
     onCancel?: () => void;
@@ -33,14 +33,14 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     const form = useForm<z.infer<typeof createWorkspaceSchema>>({
         resolver: zodResolver(createWorkspaceSchema),
         defaultValues: {
-            name: ''
+            name: ""
         }
     });
 
     const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
         const finalValues = {
             ...values,
-            image: values.image instanceof File ? values.image : ''
+            image: values.image instanceof File ? values.image : ""
         };
 
         mutate(
@@ -58,7 +58,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
         const file = e.target.files?.[0];
 
         if (file) {
-            form.setValue('image', file);
+            form.setValue("image", file);
         }
     };
 

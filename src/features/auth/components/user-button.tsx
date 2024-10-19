@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { DottedSeparator } from '@/components/dotted-separator';
-import { useLogout } from '../api/use-logout';
-import { useCurrent } from '../api/use-current';
-import { Loader, LogOut } from 'lucide-react';
+} from "@/components/ui/dropdown-menu";
+import { DottedSeparator } from "@/components/dotted-separator";
+import { useLogout } from "../api/use-logout";
+import { useCurrent } from "../api/use-current";
+import { Loader, LogOut } from "lucide-react";
 
 const UserButton = () => {
     const { mutate: logout } = useLogout();
@@ -31,7 +31,7 @@ const UserButton = () => {
     const { name, email } = user;
     const avatarFallback = name
         ? name.charAt(0).toUpperCase()
-        : (email.charAt(0).toUpperCase() ?? 'U');
+        : (email.charAt(0).toUpperCase() ?? "U");
 
     return (
         <DropdownMenu modal={false}>
@@ -50,7 +50,7 @@ const UserButton = () => {
                         </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-center justify-center">
-                        <p className="text-sm font-medium text-neutral-900">{name || 'User'}</p>
+                        <p className="text-sm font-medium text-neutral-900">{name || "User"}</p>
                         <p className="text-xs text-neutral-500">{email}</p>
                     </div>
                 </div>

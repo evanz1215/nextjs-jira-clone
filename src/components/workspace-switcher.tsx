@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { RiAddCircleFill } from 'react-icons/ri';
-import { useGetWorkspaces } from '@/features/workspaces/api/use-get-workspaces';
+import { RiAddCircleFill } from "react-icons/ri";
+import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue
-} from '@/components/ui/select';
-import { WorkspaceAvatar } from '@/features/workspaces/components/workspace-avatar';
+} from "@/components/ui/select";
+import { WorkspaceAvatar } from "@/features/workspaces/components/workspace-avatar";
 
 export const WorkspaceSwitcher = () => {
     const { data: workspaces } = useGetWorkspaces();

@@ -1,9 +1,9 @@
-import 'server-only';
+import "server-only";
 
-import { getCookie } from 'hono/cookie';
-import { createMiddleware } from 'hono/factory';
+import { getCookie } from "hono/cookie";
+import { createMiddleware } from "hono/factory";
 
-import { AUTH_COOKIE } from '@/features/auth/constants';
+import { AUTH_COOKIE } from "@/features/auth/constants";
 
 import {
     Account,
@@ -15,7 +15,7 @@ import {
     type Databases as DatabasesType,
     type Storage as StorageType,
     type Users as UsersType
-} from 'node-appwrite';
+} from "node-appwrite";
 
 type AdditionalContext = {
     Variables: {
@@ -37,7 +37,7 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(async (c, n
     if (!session) {
         return c.json(
             {
-                error: 'Unauthorized'
+                error: "Unauthorized"
             },
             401
         );
@@ -51,10 +51,10 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(async (c, n
 
     const user = await account.get();
 
-    c.set('account', account);
-    c.set('storage', storage);
-    c.set('databases', databases);
-    c.set('user', user);
+    c.set("account", account);
+    c.set("storage", storage);
+    c.set("databases", databases);
+    c.set("user", user);
 
     await next();
 });

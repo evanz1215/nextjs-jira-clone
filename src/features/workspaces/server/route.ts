@@ -1,18 +1,18 @@
-import { zValidator } from '@hono/zod-validator';
-import { Hono } from 'hono';
-import { createWorkspaceSchema } from '../schemas';
-import { sessionMiddleware } from '@/lib/session-middleware';
-import { DATABASE_ID, WORKSPACES_ID, IMAGE_BUCKET_ID, MEMBERS_ID } from '@/config';
-import { ID, Query } from 'node-appwrite';
-import { MemberRole } from '@/features/members/types';
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
+import { createWorkspaceSchema } from "../schemas";
+import { sessionMiddleware } from "@/lib/session-middleware";
+import { DATABASE_ID, WORKSPACES_ID, IMAGE_BUCKET_ID, MEMBERS_ID } from "@/config";
+import { ID, Query } from "node-appwrite";
+import { MemberRole } from "@/features/members/types";
 
 const app = new Hono()
-    .get('/', sessionMiddleware, async (c) => {
-        const user = c.get('user');
-        const databases = c.get('databases');
+    .get("/", sessionMiddleware, async (c) => {
+        const user = c.get("user");
+        const databases = c.get("databases");
 
         const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
-            Query.equal('userId', user.$id)
+            Query.equal("userId", user.$id)
         ]);
 
         if (members.total === 0) {
@@ -27,22 +27,22 @@ const app = new Hono()
         const workspaceIds = members.documents.map((member) => member.workspaceId);
 
         const workspaces = await databases.listDocuments(DATABASE_ID, WORKSPACES_ID, [
-            Query.orderDesc('$createdAt'),
-            Query.contains('$id', workspaceIds)
+            Query.orderDesc("$createdAt"),
+            Query.contains("$id", workspaceIds)
         ]);
 
         return c.json({ data: workspaces });
     })
     .post(
-        '/', // => /workspaces
-        zValidator('form', createWorkspaceSchema),
+        "/", // => /workspaces
+        zValidator("form", createWorkspaceSchema),
         sessionMiddleware,
         async (c) => {
-            const database = c.get('databases');
-            const storage = c.get('storage');
-            const user = c.get('user');
+            const database = c.get("databases");
+            const storage = c.get("storage");
+            const user = c.get("user");
 
-            const { name, image } = c.req.valid('form');
+            const { name, image } = c.req.valid("form");
 
             let uploadedImageUrl: string | undefined;
 
@@ -51,7 +51,7 @@ const app = new Hono()
 
                 const arrayBuffer = await storage.getFilePreview(IMAGE_BUCKET_ID, file.$id);
 
-                uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString('base64')}`;
+                uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
             }
 
             const workspace = await database.createDocument(
