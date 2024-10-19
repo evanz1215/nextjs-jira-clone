@@ -1,39 +1,33 @@
-"use client";
+'use client'
 
-import { z } from "zod";
-import { DottedSeparator } from "@/components/dotted-separator";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import Link from "next/link";
-import { loginSchema } from "../schemas";
-import { useLogin } from "../api/use-login";
+import { z } from 'zod'
+import { DottedSeparator } from '@/components/dotted-separator'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { FcGoogle } from 'react-icons/fc'
+import { FaGithub } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import Link from 'next/link'
+import { loginSchema } from '../schemas'
+import { useLogin } from '../api/use-login'
 
 const SignInCard = () => {
-  const { mutate, isPending } = useLogin();
+  const { mutate, isPending } = useLogin()
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+      email: '',
+      password: ''
+    }
+  })
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    mutate({ json: values });
-  };
+    mutate({ json: values })
+  }
 
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
@@ -52,11 +46,7 @@ const SignInCard = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="Enter email address"
-                    />
+                    <Input {...field} type="email" placeholder="Enter email address" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -69,11 +59,7 @@ const SignInCard = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="Enter password"
-                    />
+                    <Input {...field} type="password" placeholder="Enter password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,22 +78,12 @@ const SignInCard = () => {
       </div>
 
       <CardContent className="p-7 flex flex-col gap-y-4">
-        <Button
-          disabled={isPending}
-          variant="secondary"
-          size="lg"
-          className="w-full"
-        >
+        <Button disabled={isPending} variant="secondary" size="lg" className="w-full">
           <FcGoogle className="mr-2 size-5" />
           Login with Google
         </Button>
 
-        <Button
-          disabled={isPending}
-          variant="secondary"
-          size="lg"
-          className="w-full"
-        >
+        <Button disabled={isPending} variant="secondary" size="lg" className="w-full">
           <FaGithub className="mr-2 size-5" />
           Login with Github
         </Button>
@@ -124,7 +100,7 @@ const SignInCard = () => {
         </p>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default SignInCard;
+export default SignInCard

@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
-import { DottedSeparator } from "./dotted-separator";
-import { Navigation } from "./navigation";
-import { WorkspaceSwitcher } from "./workspace-switcher";
+import Image from 'next/image'
+import Link from 'next/link'
+import { DottedSeparator } from './dotted-separator'
+import { Navigation } from './navigation'
+import { WorkspaceSwitcher } from './workspace-switcher'
 
 const Sidebar = () => {
   return (
@@ -15,7 +15,7 @@ const Sidebar = () => {
       <DottedSeparator className="my-4" />
       <Navigation />
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

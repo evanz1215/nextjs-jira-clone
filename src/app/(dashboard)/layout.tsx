@@ -1,8 +1,8 @@
-import Navbar from "@/components/narbar";
-import Sidebar from "@/components/sidebar";
+import Navbar from '@/components/narbar'
+import Sidebar from '@/components/sidebar'
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
@@ -21,7 +21,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardLayout;
+export default DashboardLayout

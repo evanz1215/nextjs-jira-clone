@@ -1,77 +1,77 @@
 // import { z } from "zod";
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-import { loginSchema, registerSchema } from "../schemas";
-import { createAdminClient } from "@/lib/appwrite";
-import { ID } from "node-appwrite";
-import { deleteCookie, setCookie } from "hono/cookie";
-import { AUTH_COOKIE } from "../constants";
-import { sessionMiddleware } from "@/lib/session-middleware";
+import { Hono } from 'hono'
+import { zValidator } from '@hono/zod-validator'
+import { loginSchema, registerSchema } from '../schemas'
+import { createAdminClient } from '@/lib/appwrite'
+import { ID } from 'node-appwrite'
+import { deleteCookie, setCookie } from 'hono/cookie'
+import { AUTH_COOKIE } from '../constants'
+import { sessionMiddleware } from '@/lib/session-middleware'
 
 const app = new Hono()
-  .get("/current", sessionMiddleware, (c) => {
-    const user = c.get("user");
+  .get('/current', sessionMiddleware, (c) => {
+    const user = c.get('user')
 
     return c.json({
-      data: user,
-    });
+      data: user
+    })
   })
   .post(
-    "/login",
-    zValidator("json", loginSchema),
+    '/login',
+    zValidator('json', loginSchema),
     // zValidator("param", z.object({ userId: z.number() })), // 1. 如果使用/login/:userId這種路由，可以使用這個驗證
     async (c) => {
       // const {userId} = c.req.valid("param"); // 2. 如果使用/login/:userId這種路由，可以使用這個取得參數
 
-      const { email, password } = await c.req.valid("json");
+      const { email, password } = await c.req.valid('json')
 
-      const { account } = await createAdminClient();
+      const { account } = await createAdminClient()
 
-      const session = await account.createEmailPasswordSession(email, password);
+      const session = await account.createEmailPasswordSession(email, password)
 
       setCookie(c, AUTH_COOKIE, session.secret, {
-        path: "/",
+        path: '/',
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
-        maxAge: 60 * 60 * 24 * 30,
-      });
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24 * 30
+      })
 
       return c.json({
-        success: true,
-      });
+        success: true
+      })
     }
   )
-  .post("/register", zValidator("json", registerSchema), async (c) => {
-    const { name, email, password } = await c.req.valid("json");
+  .post('/register', zValidator('json', registerSchema), async (c) => {
+    const { name, email, password } = await c.req.valid('json')
 
-    const { account } = await createAdminClient();
+    const { account } = await createAdminClient()
 
-    await account.create(ID.unique(), email, password, name);
+    await account.create(ID.unique(), email, password, name)
 
-    const session = await account.createEmailPasswordSession(email, password);
+    const session = await account.createEmailPasswordSession(email, password)
 
     setCookie(c, AUTH_COOKIE, session.secret, {
-      path: "/",
+      path: '/',
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
-      maxAge: 60 * 60 * 24 * 30,
-    });
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 30
+    })
 
     return c.json({
-      success: true,
-    });
+      success: true
+    })
   })
-  .post("/logout", sessionMiddleware, async (c) => {
-    const account = c.get("account");
+  .post('/logout', sessionMiddleware, async (c) => {
+    const account = c.get('account')
 
-    deleteCookie(c, AUTH_COOKIE);
-    await account.deleteSession("current");
+    deleteCookie(c, AUTH_COOKIE)
+    await account.deleteSession('current')
 
     return c.json({
-      success: true,
-    });
-  });
+      success: true
+    })
+  })
 
-export default app;
+export default app
