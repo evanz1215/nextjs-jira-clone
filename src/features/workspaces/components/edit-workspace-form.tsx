@@ -25,7 +25,8 @@ import { ImageIcon, ArrowLeftIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Workspace } from "../types";
-import { useConfirm } from "@/app/hooks/use-confirm";
+import { useConfirm } from "@/hooks/use-confirm";
+import { useDeleteWorkspace } from "../api/use-delete-workspace";
 
 interface EditWorkspaceFormProps {
     onCancel?: () => void;
@@ -35,6 +36,7 @@ interface EditWorkspaceFormProps {
 export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceFormProps) => {
     const router = useRouter();
     const { mutate, isPending } = useUpdateWorkspace();
+    const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } = useDeleteWorkspace();
 
     const [DeleteDialog, confirmDelete] = useConfirm(
         "Delete Workspace",
@@ -59,7 +61,16 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
             return;
         }
 
-        console.log("deleting...");
+        deleteWorkspace(
+            {
+                param: { workspaceId: initialValues.$id }
+            },
+            {
+                onSuccess: () => {
+                    window.location.href = "/";
+                }
+            }
+        );
     };
 
     const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
@@ -246,7 +257,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
                             size="sm"
                             variant="destructive"
                             type="button"
-                            disabled={isPending}
+                            disabled={isPending || isDeletingWorkspace}
                             onClick={handleDelete}
                         >
                             Delete Workspace
