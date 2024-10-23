@@ -6,6 +6,7 @@ import { AUTH_COOKIE } from "@/features/auth/constants";
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { getMember } from "../members/utils";
 import { Workspace } from "./types";
+import { createSessionClient } from "@/lib/appwrite";
 
 export const getWorkspaces = async () => {
     try {
@@ -61,20 +62,7 @@ interface GetWorkspaceProps {
 
 export const getWorkspace = async ({ workspaceId }: GetWorkspaceProps) => {
     try {
-        const client = new Client()
-            .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-            .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
-
-        const session = await cookies().get(AUTH_COOKIE);
-
-        if (!session) {
-            return null;
-        }
-
-        client.setSession(session.value);
-
-        const databases = new Databases(client);
-        const account = new Account(client);
+        const { databases, account } = await createSessionClient();
         const user = await account.get();
 
         const member = getMember({
