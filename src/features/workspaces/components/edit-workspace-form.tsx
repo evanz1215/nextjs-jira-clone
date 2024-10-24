@@ -132,7 +132,10 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
         });
     };
 
-    const fullInviteLink = `${window.location.origin}/workspace/${initialValues.$id}/join/${initialValues.inviteCode}`;
+    const fullInviteLink =
+        typeof window !== "undefined"
+            ? `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`
+            : "";
 
     return (
         <div className="flex flex-col gap-y-4">
